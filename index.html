@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 Dodgers Season Ticket Plans</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0a1628;
+  --navy-mid: #112040;
+  --navy-light: #1a3060;
+  --dodger-blue: #005A9C;
+  --sky: #78b4e0;
+  --white: #ffffff;
+  --off-white: #f4f6fa;
+  --plan-wa: #1565C0;
+  --plan-wb: #00897B;
+  --plan-ba: #AD1457;
+  --plan-bb: #6A1B9A;
+  --grey-100: #f0f2f5;
+  --grey-200: #e2e5eb;
+  --grey-400: #9aa0ad;
+  --grey-600: #5a6273;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  min-height: 100vh;
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 60px 40px 50px;
+  background: var(--navy);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 50%, rgba(0,90,156,0.35) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 80% at 10% 100%, rgba(120,180,224,0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+.hero-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin-bottom: 14px;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards 0.1s;
+}
+.hero h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(48px, 7vw, 88px);
+  font-weight: 800;
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards 0.2s;
+}
+.hero h1 span { color: var(--sky); }
+.hero-sub {
+  margin-top: 18px;
+  font-size: 16px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.6);
+  max-width: 480px;
+  line-height: 1.6;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards 0.35s;
+}
+.hero-badges {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards 0.45s;
+}
+.plan-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.15);
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+.plan-badge .swatch { width: 8px; height: 8px; border-radius: 50%; }
+.plan-badge.active { border-color: transparent; }
+.plan-badge[data-plan="WA"] { color: #90bbf5; }
+.plan-badge[data-plan="WA"].active { background: var(--plan-wa); color: white; border-color: var(--plan-wa); }
+.plan-badge[data-plan="WB"] { color: #80d5c8; }
+.plan-badge[data-plan="WB"].active { background: var(--plan-wb); color: white; border-color: var(--plan-wb); }
+.plan-badge[data-plan="BA"] { color: #f09ab8; }
+.plan-badge[data-plan="BA"].active { background: var(--plan-ba); color: white; border-color: var(--plan-ba); }
+.plan-badge[data-plan="BB"] { color: #c59de8; }
+.plan-badge[data-plan="BB"].active { background: var(--plan-bb); color: white; border-color: var(--plan-bb); }
+.plan-badge:hover { transform: translateY(-1px); }
+
+/* ── STATS BAR ── */
+.stats-bar {
+  background: var(--navy-mid);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  padding: 0 40px;
+}
+.stats-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.stat-block {
+  padding: 22px 24px;
+  border-right: 1px solid rgba(255,255,255,0.07);
+  position: relative;
+  overflow: hidden;
+}
+.stat-block:last-child { border-right: none; }
+.stat-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.stat-block.wa::before { background: var(--plan-wa); }
+.stat-block.wb::before { background: var(--plan-wb); }
+.stat-block.ba::before { background: var(--plan-ba); }
+.stat-block.bb::before { background: var(--plan-bb); }
+.stat-block.visible::before { opacity: 1; }
+.stat-plan-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.stat-block.wa .stat-plan-name { color: #90bbf5; }
+.stat-block.wb .stat-plan-name { color: #80d5c8; }
+.stat-block.ba .stat-plan-name { color: #f09ab8; }
+.stat-block.bb .stat-plan-name { color: #c59de8; }
+.stat-number {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1;
+  color: white;
+  margin-bottom: 10px;
+}
+.stat-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.stat-chip {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.6);
+}
+
+/* ── MAIN CONTENT ── */
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 40px 80px;
+}
+
+/* ── LEGEND ── */
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 400;
+}
+.legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* ── CALENDAR ── */
+.months-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+@media (max-width: 800px) {
+  .months-grid { grid-template-columns: 1fr; }
+  .stats-inner { grid-template-columns: repeat(2, 1fr); }
+  .hero { padding: 40px 20px; }
+  .main { padding: 24px 20px 60px; }
+  .stats-bar { padding: 0 20px; }
+}
+
+.month-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px;
+  padding: 24px;
+  opacity: 0;
+  animation: fadeUp 0.5s ease forwards;
+}
+.month-card:nth-child(1) { animation-delay: 0.05s; }
+.month-card:nth-child(2) { animation-delay: 0.10s; }
+.month-card:nth-child(3) { animation-delay: 0.15s; }
+.month-card:nth-child(4) { animation-delay: 0.20s; }
+.month-card:nth-child(5) { animation-delay: 0.25s; }
+.month-card:nth-child(6) { animation-delay: 0.30s; }
+
+.month-heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 16px;
+}
+.dow-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 4px;
+}
+.dow-cell {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  padding: 4px 0;
+}
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: 72px;
+  gap: 2px;
+}
+.day-cell {
+  height: 72px;
+  overflow: hidden;
+  padding: 5px 4px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid transparent;
+  transition: border-color 0.15s;
+}
+.day-cell:hover { border-color: rgba(255,255,255,0.1); }
+.day-cell.empty { background: transparent; border-color: transparent; pointer-events: none; }
+.day-cell.weekend { background: rgba(255,255,255,0.04); }
+.day-num {
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 3px;
+  padding-left: 1px;
+}
+.tags { display: flex; flex-direction: column; gap: 2px; }
+.tag {
+  font-size: 9px;
+  font-weight: 600;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.03em;
+  padding: 2px 5px;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: default;
+  transition: opacity 0.15s;
+}
+.tag.wa { background: var(--plan-wa); color: white; }
+.tag.wb { background: var(--plan-wb); color: white; }
+.tag.ba { background: var(--plan-ba); color: white; }
+.tag.bb { background: var(--plan-bb); color: white; }
+.tag.giveaway { background: rgba(200,205,215,0.12); color: rgba(200,210,225,0.55); border: 1px solid rgba(200,210,225,0.12); font-weight: 400; }
+.tag.special { background: rgba(200,205,215,0.08); color: rgba(200,210,225,0.45); border: 1px solid rgba(200,210,225,0.1); font-weight: 400; font-style: italic; }
+
+/* ── TOOLTIP ── */
+#tooltip {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  display: none;
+  background: #1a2a4a;
+  border: 1px solid rgba(120,180,224,0.25);
+  border-radius: 12px;
+  padding: 12px 16px;
+  max-width: 240px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+#tooltip h4 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: white;
+  margin-bottom: 4px;
+}
+#tooltip .tt-date { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.4; }
+#tooltip .tt-plan { font-size: 11px; color: var(--sky); margin-top: 5px; font-weight: 500; }
+#tooltip .tt-giveaway { font-size: 11px; color: #b0bfd8; margin-top: 5px; }
+#tooltip .tt-special { font-size: 11px; color: #a8b8d0; margin-top: 4px; font-style: italic; }
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 32px 20px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.2);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Los Angeles Dodgers · 2026 Season</div>
+    <h1>Season Ticket<br><span>Plan Guide</span></h1>
+    <p class="hero-sub">Compare all four quarter-season plans side by side. See giveaway games and special event packages mapped to every game date.</p>
+    <div class="hero-badges" id="planToggles">
+      <button class="plan-badge active" data-plan="WA" onclick="togglePlan('WA',this)">
+        <span class="swatch" style="background:var(--plan-wa)"></span>White A
+      </button>
+      <button class="plan-badge active" data-plan="WB" onclick="togglePlan('WB',this)">
+        <span class="swatch" style="background:var(--plan-wb)"></span>White B
+      </button>
+      <button class="plan-badge active" data-plan="BA" onclick="togglePlan('BA',this)">
+        <span class="swatch" style="background:var(--plan-ba)"></span>Blue A
+      </button>
+      <button class="plan-badge active" data-plan="BB" onclick="togglePlan('BB',this)">
+        <span class="swatch" style="background:var(--plan-bb)"></span>Blue B
+      </button>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stats-inner" id="statsBar"></div>
+</div>
+
+<div class="main">
+  <div class="legend-row">
+    <div class="legend-item"><span class="legend-swatch" style="background:var(--plan-wa)"></span>White A</div>
+    <div class="legend-item"><span class="legend-swatch" style="background:var(--plan-wb)"></span>White B</div>
+    <div class="legend-item"><span class="legend-swatch" style="background:var(--plan-ba)"></span>Blue A</div>
+    <div class="legend-item"><span class="legend-swatch" style="background:var(--plan-bb)"></span>Blue B</div>
+    <div class="legend-item"><span class="legend-swatch" style="background:rgba(200,210,225,0.15);border:1px solid rgba(200,210,225,0.2)"></span>Giveaway</div>
+    <div class="legend-item"><span class="legend-swatch" style="background:rgba(200,210,225,0.08);border:1px solid rgba(200,210,225,0.15)"></span>Special Event Pkg</div>
+    <div class="legend-item"><span class="legend-swatch" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1)"></span>Weekend</div>
+  </div>
+  <div class="months-grid" id="calendar"></div>
+</div>
+
+<footer>Data based on 2026 Dodgers official promotions calendar. Schedule subject to change. Special Event Packages require separate ticket purchase.</footer>
+
+<div id="tooltip"></div>
+
+<script>
+const PLANS = {
+  WA: { name:'White A', cls:'wa', games:[
+    {date:'2026-04-26',opp:'CHC'},{date:'2026-05-12',opp:'SF'},{date:'2026-05-25',opp:'COL'},
+    {date:'2026-05-31',opp:'PHI'},{date:'2026-06-19',opp:'BAL'},{date:'2026-07-03',opp:'SD'},
+    {date:'2026-07-10',opp:'ARI'},{date:'2026-07-28',opp:'SEA'},{date:'2026-08-02',opp:'BOS'},
+    {date:'2026-08-11',opp:'KC'},{date:'2026-08-15',opp:'MIL'},{date:'2026-08-22',opp:'PIT'},
+    {date:'2026-09-03',opp:'STL'},{date:'2026-09-06',opp:'WAS'},{date:'2026-09-23',opp:'SD'}
+  ]},
+  WB: { name:'White B', cls:'wb', games:[
+    {date:'2026-04-25',opp:'CHC'},{date:'2026-04-28',opp:'MIA'},{date:'2026-05-10',opp:'ATL'},
+    {date:'2026-05-14',opp:'SF'},{date:'2026-05-27',opp:'COL'},{date:'2026-06-06',opp:'LAA'},
+    {date:'2026-06-17',opp:'TB'},{date:'2026-06-21',opp:'BAL'},{date:'2026-07-06',opp:'COL'},
+    {date:'2026-07-11',opp:'ARI'},{date:'2026-07-31',opp:'BOS'},{date:'2026-08-10',opp:'KC'},
+    {date:'2026-08-23',opp:'PIT'},{date:'2026-09-04',opp:'WAS'},{date:'2026-09-08',opp:'CIN'},
+    {date:'2026-09-18',opp:'SF'},{date:'2026-09-22',opp:'SD'}
+  ]},
+  BA: { name:'Blue A', cls:'ba', games:[
+    {date:'2026-04-29',opp:'MIA'},{date:'2026-05-09',opp:'ATL'},{date:'2026-05-13',opp:'SF'},
+    {date:'2026-05-29',opp:'PHI'},{date:'2026-06-07',opp:'LAA'},{date:'2026-06-15',opp:'TB'},
+    {date:'2026-07-07',opp:'COL'},{date:'2026-07-12',opp:'ARI'},{date:'2026-07-30',opp:'SEA'},
+    {date:'2026-08-01',opp:'BOS'},{date:'2026-08-13',opp:'MIL'},{date:'2026-08-21',opp:'PIT'},
+    {date:'2026-09-02',opp:'STL'},{date:'2026-09-07',opp:'CIN'},{date:'2026-09-19',opp:'SF'},
+    {date:'2026-09-24',opp:'SD'}
+  ]},
+  BB: { name:'Blue B', cls:'bb', games:[
+    {date:'2026-04-24',opp:'CHC'},{date:'2026-04-27',opp:'MIA'},{date:'2026-05-08',opp:'ATL'},
+    {date:'2026-05-11',opp:'SF'},{date:'2026-05-26',opp:'COL'},{date:'2026-05-30',opp:'PHI'},
+    {date:'2026-06-05',opp:'LAA'},{date:'2026-06-16',opp:'TB'},{date:'2026-07-05',opp:'SD'},
+    {date:'2026-07-08',opp:'COL'},{date:'2026-07-29',opp:'SEA'},{date:'2026-08-12',opp:'KC'},
+    {date:'2026-08-16',opp:'MIL'},{date:'2026-09-01',opp:'STL'},{date:'2026-09-05',opp:'WAS'},
+    {date:'2026-09-09',opp:'CIN'},{date:'2026-09-20',opp:'SF'}
+  ]}
+};
+
+const GIVEAWAYS = {
+  '2026-04-15':'Jackie Robinson Jersey','2026-04-25':'Roki Sasaki Bobblehead',
+  '2026-05-08':'Miguel Rojas Bobblehead','2026-05-09':'Blake Snell Bobblehead',
+  '2026-05-10':"Mother's Day Tote Bag",'2026-05-11':'2025 WS Replica Trophy',
+  '2026-05-12':'Ice Cube Lowrider Bobblehead','2026-05-13':'2025 WS Gold Jerseys',
+  '2026-05-25':'Dave Roberts Bobblehead','2026-05-27':'Yoshinobu Yamamoto Bobblehead',
+  '2026-05-29':'Alex Vesia Bobblehead','2026-05-30':'Teoscar Hernández Bobblehead',
+  '2026-06-06':'Tyler Glasnow Bobblehead','2026-06-16':'Dodgers Soccer Jersey',
+  '2026-06-19':'Mookie Betts Bobblehead',"2026-06-20":"Shaquille O'Neal Bobblehead",
+  '2026-06-21':"Father's Day Giveaway",'2026-07-06':'Freddie Freeman Bobblehead',
+  '2026-07-08':'Shohei Ohtani "Greatest Game" Bobblehead','2026-07-11':'Son Heung-min Bobblehead',
+  '2026-07-28':'2025 WS Mystery Rings','2026-07-29':'Edwin Diaz Bobblehead',
+  '2026-07-31':'Kyle Tucker Bobblehead','2026-08-10':'Max Muncy Bobblehead',
+  '2026-08-14':'Clayton Kershaw Bobblehead','2026-08-15':'Reggie Smith Bobblehead',
+  '2026-08-22':'Shohei Ohtani "Starter Series" Bobblehead',
+  '2026-09-05':'Yoshinobu Yamamoto "Starter Series" Bobblehead'
+};
+
+const SPECIALS = {
+  '2026-04-24':{name:'Date Night',opp:'CHC',item:'Date Night Blanket'},
+  '2026-04-27':{name:'Japanese Heritage Night',opp:'MIA',item:'Heritage Night Jersey'},
+  '2026-04-28':{name:"Women's Night",opp:'MIA',item:"Quarter Zip Sweater"},
+  '2026-05-08':{name:'Mental Health Awareness Night',opp:'ATL',item:'Awareness Blanket'},
+  '2026-05-14':{name:'Star Wars Night',opp:'SF',item:'Star Wars Item'},
+  '2026-05-26':{name:'Mexican Heritage Night',opp:'COL',item:'Heritage Jersey'},
+  '2026-06-05':{name:'LGBTQ+ Pride Night',opp:'LAA',item:'Pride Night Item'},
+  '2026-06-15':{name:'Filipino Heritage Night',opp:'TB',item:'Heritage Jersey'},
+  '2026-07-07':{name:'Hawaiian Shirt Night',opp:'COL',item:'Hawaiian Shirt'},
+  '2026-07-10':{name:'Black Heritage Night',opp:'ARI',item:'Heritage Night Item'},
+  '2026-07-30':{name:'Guatemalan Heritage Night',opp:'SEA',item:'Heritage Item'},
+  '2026-08-11':{name:'Salvadoran Heritage Night',opp:'KC',item:'Heritage Item'},
+  '2026-08-13':{name:'Korean Heritage Night',opp:'MIL',item:'Heritage Item'},
+  '2026-09-05':{name:'Union Night',opp:'WAS',item:'Union Night Item'},
+  '2026-09-07':{name:'First Responders Night',opp:'CIN',item:'First Responders Item'},
+  '2026-09-08':{name:'Día de Los Dodgers',opp:'CIN',item:'Día de Los Dodgers Item'},
+  '2026-09-09':{name:'Nurses Night',opp:'CIN',item:'Nurses Night Item'}
+};
+
+let activePlans = {WA:true,WB:true,BA:true,BB:true};
+
+function togglePlan(p, el) {
+  activePlans[p] = !activePlans[p];
+  el.classList.toggle('active', activePlans[p]);
+  render();
+}
+
+function isWeekend(d) {
+  const day = new Date(d+'T12:00:00').getDay();
+  return day===0||day===6;
+}
+
+function getGamesOnDate(dateStr) {
+  let games = [];
+  Object.entries(PLANS).forEach(([pk, plan]) => {
+    if(!activePlans[pk]) return;
+    const g = plan.games.find(x=>x.date===dateStr);
+    if(g) games.push({...g, planKey:pk, cls:plan.cls, planName:plan.name});
+  });
+  return games;
+}
+
+function renderStats() {
+  const keys = ['WA','WB','BA','BB'];
+  document.getElementById('statsBar').innerHTML = keys.map(p => {
+    const games = PLANS[p].games;
+    const wknd = games.filter(g=>isWeekend(g.date)).length;
+    const gway = games.filter(g=>GIVEAWAYS[g.date]).length;
+    const spec = games.filter(g=>SPECIALS[g.date]).length;
+    const cls = PLANS[p].cls;
+    return `<div class="stat-block ${cls} ${activePlans[p]?'visible':''}">
+      <div class="stat-plan-name">${PLANS[p].name}</div>
+      <div class="stat-number">${games.length}</div>
+      <div class="stat-chips">
+        <span class="stat-chip">${games.length} games</span>
+        <span class="stat-chip">${wknd} weekends</span>
+        <span class="stat-chip">${gway} giveaways</span>
+        <span class="stat-chip">${spec} specials</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderCalendar() {
+  const months = [
+    {year:2026,month:3,label:'April 2026'},
+    {year:2026,month:4,label:'May 2026'},
+    {year:2026,month:5,label:'June 2026'},
+    {year:2026,month:6,label:'July 2026'},
+    {year:2026,month:7,label:'August 2026'},
+    {year:2026,month:8,label:'September 2026'}
+  ];
+
+  document.getElementById('calendar').innerHTML = months.map(({year,month,label},mi) => {
+    const firstDay = new Date(year,month,1).getDay();
+    const daysInMonth = new Date(year,month+1,0).getDate();
+    let cells = [];
+    for(let i=0;i<firstDay;i++) cells.push(null);
+    for(let d=1;d<=daysInMonth;d++) cells.push(d);
+    while(cells.length%7!==0) cells.push(null);
+
+    const daysHtml = cells.map(d => {
+      if(d===null) return `<div class="day-cell empty"></div>`;
+      const mm = String(month+1).padStart(2,'0');
+      const dd = String(d).padStart(2,'0');
+      const dateStr = `${year}-${mm}-${dd}`;
+      const games = getGamesOnDate(dateStr);
+      const giveaway = GIVEAWAYS[dateStr];
+      const special = SPECIALS[dateStr];
+      const weekend = isWeekend(dateStr);
+
+      const gameTags = games.map(g =>
+        `<div class="tag ${g.cls}" data-date="${dateStr}" data-opp="${g.opp}" data-plan="${g.planName}" data-giveaway="${giveaway||''}" data-special="">LAD vs ${g.opp}</div>`
+      ).join('');
+
+      const specialTag = special
+        ? `<div class="tag special" data-date="${dateStr}" data-opp="${special.opp}" data-plan="Special Pkg" data-giveaway="" data-special="${special.name}|${special.item}">★ ${special.name.length>16?special.name.slice(0,16)+'…':special.name}</div>`
+        : '';
+
+      const giveawayTag = giveaway
+        ? `<div class="tag giveaway" data-date="${dateStr}" data-opp="" data-plan="Giveaway" data-giveaway="${giveaway}" data-special="">🎁 ${giveaway.length>16?giveaway.slice(0,16)+'…':giveaway}</div>`
+        : '';
+
+      return `<div class="day-cell${weekend?' weekend':''}">
+        <div class="day-num">${d}</div>
+        <div class="tags">${gameTags}${specialTag}${giveawayTag}</div>
+      </div>`;
+    }).join('');
+
+    return `<div class="month-card" style="animation-delay:${0.05*(mi+1)}s">
+      <div class="month-heading">${label}</div>
+      <div class="dow-row">${['Su','Mo','Tu','We','Th','Fr','Sa'].map(d=>`<div class="dow-cell">${d}</div>`).join('')}</div>
+      <div class="days-grid">${daysHtml}</div>
+    </div>`;
+  }).join('');
+
+  document.querySelectorAll('.tag').forEach(el => {
+    el.addEventListener('mouseenter', showTooltip);
+    el.addEventListener('mouseleave', hideTooltip);
+  });
+}
+
+function render() { renderStats(); renderCalendar(); }
+
+const tip = document.getElementById('tooltip');
+function showTooltip(e) {
+  const el = e.currentTarget;
+  const date = el.dataset.date;
+  const opp = el.dataset.opp;
+  const plan = el.dataset.plan;
+  const giveaway = el.dataset.giveaway;
+  const special = el.dataset.special;
+  const formatted = new Date(`${date}T12:00:00`).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  const weekend = isWeekend(date);
+  const [sName, sItem] = special ? special.split('|') : ['',''];
+  tip.innerHTML = `
+    <h4>${opp ? 'LAD vs '+opp : (sName || 'Giveaway')}</h4>
+    <div class="tt-date">${formatted}${weekend?' · Weekend':''}</div>
+    <div class="tt-plan">${plan}</div>
+    ${giveaway?`<div class="tt-giveaway">🎁 ${giveaway}</div>`:''}
+    ${sName?`<div class="tt-special">★ ${sName}${sItem?' — '+sItem:''}</div>`:''}
+  `;
+  tip.style.display = 'block';
+  moveTip(e);
+}
+function moveTip(e) {
+  let x = e.clientX+16, y = e.clientY+16;
+  if(x+260>window.innerWidth) x = e.clientX-270;
+  if(y+140>window.innerHeight) y = e.clientY-150;
+  tip.style.left = x+'px';
+  tip.style.top = y+'px';
+}
+function hideTooltip() { tip.style.display='none'; }
+document.addEventListener('mousemove', e => { if(tip.style.display!=='none') moveTip(e); });
+
+render();
+</script>
+</body>
+</html>
