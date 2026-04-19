@@ -377,6 +377,9 @@ footer {
     <h1>Season Ticket<br><span>Plan Guide</span></h1>
     <p class="hero-sub">Compare all four quarter-season plans side by side. See giveaway games and special event packages mapped to every game date.</p>
     <div class="hero-badges" id="planToggles">
+      <button class="plan-badge active" data-plan="KP" onclick="togglePlan('KP',this)">
+        <span class="swatch" style="background:var(--plan-kp)"></span>Kevin's Plan
+      </button>
       <button class="plan-badge active" data-plan="WA" onclick="togglePlan('WA',this)">
         <span class="swatch" style="background:var(--plan-wa)"></span>White A
       </button>
@@ -389,9 +392,6 @@ footer {
       <button class="plan-badge active" data-plan="BB" onclick="togglePlan('BB',this)">
         <span class="swatch" style="background:var(--plan-bb)"></span>Blue B
       </button>
-      <button class="plan-badge active" data-plan="KP" onclick="togglePlan('KP',this)">
-        <span class="swatch" style="background:var(--plan-kp)"></span>Kevin's Plan
-      </button>
     </div>
   </div>
 </section>
@@ -402,11 +402,11 @@ footer {
 
 <div class="main">
   <div class="legend-row">
+    <div class="legend-item"><span class="legend-swatch" style="background:var(--plan-kp)"></span>Kevin's Plan</div>
     <div class="legend-item"><span class="legend-swatch" style="background:var(--plan-wa)"></span>White A</div>
     <div class="legend-item"><span class="legend-swatch" style="background:var(--plan-wb)"></span>White B</div>
     <div class="legend-item"><span class="legend-swatch" style="background:var(--plan-ba)"></span>Blue A</div>
     <div class="legend-item"><span class="legend-swatch" style="background:var(--plan-bb)"></span>Blue B</div>
-    <div class="legend-item"><span class="legend-swatch" style="background:var(--plan-kp)"></span>Kevin's Plan</div>
     <div class="legend-item"><span class="legend-swatch" style="background:rgba(200,210,225,0.15);border:1px solid rgba(200,210,225,0.2)"></span>Giveaway</div>
     <div class="legend-item"><span class="legend-swatch" style="background:rgba(200,210,225,0.08);border:1px solid rgba(200,210,225,0.15)"></span>Special Event Pkg</div>
     <div class="legend-item"><span class="legend-swatch" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1)"></span>Weekend</div>
@@ -502,11 +502,47 @@ const SPECIALS = {
   '2026-09-09':{name:'Nurses Night',opp:'CIN',item:'Nurses Night Item'}
 };
 
-let activePlans = {WA:true,WB:true,BA:true,BB:true,KP:true};
+const ALL_PLANS = ['KP','WA','WB','BA','BB'];
+
+function readStateFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const state = {};
+  ALL_PLANS.forEach(p => {
+    // default all on; URL param "plans" is a comma-separated list of active plans
+    state[p] = true;
+  });
+  if (params.has('plans')) {
+    const active = params.get('plans').split(',').map(s => s.trim().toUpperCase());
+    ALL_PLANS.forEach(p => { state[p] = active.includes(p); });
+  }
+  return state;
+}
+
+function writeStateToURL(state) {
+  const active = ALL_PLANS.filter(p => state[p]);
+  const params = new URLSearchParams(window.location.search);
+  if (active.length === ALL_PLANS.length) {
+    params.delete('plans');
+  } else {
+    params.set('plans', active.join(','));
+  }
+  const newURL = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+  window.history.replaceState(null, '', newURL);
+}
+
+let activePlans = readStateFromURL();
+
+function syncButtonStates() {
+  document.querySelectorAll('.plan-badge').forEach(btn => {
+    const p = btn.dataset.plan;
+    btn.classList.toggle('active', !!activePlans[p]);
+  });
+}
 
 function togglePlan(p, el) {
   activePlans[p] = !activePlans[p];
   el.classList.toggle('active', activePlans[p]);
+  writeStateToURL(activePlans);
   render();
 }
 
@@ -526,7 +562,7 @@ function getGamesOnDate(dateStr) {
 }
 
 function renderStats() {
-  const keys = ['WA','WB','BA','BB','KP'];
+  const keys = ['KP','WA','WB','BA','BB'];
   document.getElementById('statsBar').innerHTML = keys.map(p => {
     const games = PLANS[p].games;
     const wknd = games.filter(g=>isWeekend(g.date)).length;
@@ -639,6 +675,7 @@ function moveTip(e) {
 function hideTooltip() { tip.style.display='none'; }
 document.addEventListener('mousemove', e => { if(tip.style.display!=='none') moveTip(e); });
 
+syncButtonStates();
 render();
 </script>
 </body>
