@@ -18,6 +18,7 @@
   --plan-wb: #00897B;
   --plan-ba: #AD1457;
   --plan-bb: #6A1B9A;
+  --plan-kp: #B8860B;
   --grey-100: #f0f2f5;
   --grey-200: #e2e5eb;
   --grey-400: #9aa0ad;
@@ -121,6 +122,8 @@ body {
 .plan-badge[data-plan="BA"].active { background: var(--plan-ba); color: white; border-color: var(--plan-ba); }
 .plan-badge[data-plan="BB"] { color: #c59de8; }
 .plan-badge[data-plan="BB"].active { background: var(--plan-bb); color: white; border-color: var(--plan-bb); }
+.plan-badge[data-plan="KP"] { color: #f0d080; }
+.plan-badge[data-plan="KP"].active { background: var(--plan-kp); color: white; border-color: var(--plan-kp); }
 .plan-badge:hover { transform: translateY(-1px); }
 
 /* ── STATS BAR ── */
@@ -133,7 +136,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 0;
 }
 .stat-block {
@@ -155,6 +158,7 @@ body {
 .stat-block.wb::before { background: var(--plan-wb); }
 .stat-block.ba::before { background: var(--plan-ba); }
 .stat-block.bb::before { background: var(--plan-bb); }
+.stat-block.kp::before { background: var(--plan-kp); }
 .stat-block.visible::before { opacity: 1; }
 .stat-plan-name {
   font-family: 'Barlow Condensed', sans-serif;
@@ -168,6 +172,7 @@ body {
 .stat-block.wb .stat-plan-name { color: #80d5c8; }
 .stat-block.ba .stat-plan-name { color: #f09ab8; }
 .stat-block.bb .stat-plan-name { color: #c59de8; }
+.stat-block.kp .stat-plan-name { color: #f0d080; }
 .stat-number {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 36px;
@@ -318,6 +323,7 @@ body {
 .tag.wb { background: var(--plan-wb); color: white; }
 .tag.ba { background: var(--plan-ba); color: white; }
 .tag.bb { background: var(--plan-bb); color: white; }
+.tag.kp { background: var(--plan-kp); color: white; }
 .tag.giveaway { background: rgba(200,205,215,0.12); color: rgba(200,210,225,0.55); border: 1px solid rgba(200,210,225,0.12); font-weight: 400; }
 .tag.special { background: rgba(200,205,215,0.08); color: rgba(200,210,225,0.45); border: 1px solid rgba(200,210,225,0.1); font-weight: 400; font-style: italic; }
 
@@ -383,6 +389,9 @@ footer {
       <button class="plan-badge active" data-plan="BB" onclick="togglePlan('BB',this)">
         <span class="swatch" style="background:var(--plan-bb)"></span>Blue B
       </button>
+      <button class="plan-badge active" data-plan="KP" onclick="togglePlan('KP',this)">
+        <span class="swatch" style="background:var(--plan-kp)"></span>Kevin's Plan
+      </button>
     </div>
   </div>
 </section>
@@ -397,6 +406,7 @@ footer {
     <div class="legend-item"><span class="legend-swatch" style="background:var(--plan-wb)"></span>White B</div>
     <div class="legend-item"><span class="legend-swatch" style="background:var(--plan-ba)"></span>Blue A</div>
     <div class="legend-item"><span class="legend-swatch" style="background:var(--plan-bb)"></span>Blue B</div>
+    <div class="legend-item"><span class="legend-swatch" style="background:var(--plan-kp)"></span>Kevin's Plan</div>
     <div class="legend-item"><span class="legend-swatch" style="background:rgba(200,210,225,0.15);border:1px solid rgba(200,210,225,0.2)"></span>Giveaway</div>
     <div class="legend-item"><span class="legend-swatch" style="background:rgba(200,210,225,0.08);border:1px solid rgba(200,210,225,0.15)"></span>Special Event Pkg</div>
     <div class="legend-item"><span class="legend-swatch" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1)"></span>Weekend</div>
@@ -440,6 +450,17 @@ const PLANS = {
     {date:'2026-07-08',opp:'COL'},{date:'2026-07-29',opp:'SEA'},{date:'2026-08-12',opp:'KC'},
     {date:'2026-08-16',opp:'MIL'},{date:'2026-09-01',opp:'STL'},{date:'2026-09-05',opp:'WAS'},
     {date:'2026-09-09',opp:'CIN'},{date:'2026-09-20',opp:'SF'}
+  ]},
+  KP: { name:"Kevin's Plan", cls:'kp', games:[
+    {date:'2026-04-25',opp:'CHC',time:'4:15PM'},{date:'2026-05-09',opp:'ATL',time:'6:10PM'},
+    {date:'2026-05-10',opp:'ATL',time:'1:10PM'},{date:'2026-05-27',opp:'COL',time:'7:10PM'},
+    {date:'2026-05-29',opp:'PHI',time:'7:15PM'},{date:'2026-05-30',opp:'PHI',time:'7:10PM'},
+    {date:'2026-06-06',opp:'LAA',time:'7:10PM'},{date:'2026-06-16',opp:'TB',time:'7:10PM'},
+    {date:'2026-06-17',opp:'TB',time:'12:10PM'},{date:'2026-06-21',opp:'BAL',time:'1:10PM'},
+    {date:'2026-07-06',opp:'COL',time:'7:10PM'},{date:'2026-07-11',opp:'ARI',time:'6:10PM'},
+    {date:'2026-07-29',opp:'SEA',time:'7:10PM'},{date:'2026-07-31',opp:'BOS',time:'7:10PM'},
+    {date:'2026-08-10',opp:'KC',time:'7:10PM'},{date:'2026-09-18',opp:'SF',time:'7:10PM'},
+    {date:'2026-09-22',opp:'SD',time:'7:10PM'}
   ]}
 };
 
@@ -481,7 +502,7 @@ const SPECIALS = {
   '2026-09-09':{name:'Nurses Night',opp:'CIN',item:'Nurses Night Item'}
 };
 
-let activePlans = {WA:true,WB:true,BA:true,BB:true};
+let activePlans = {WA:true,WB:true,BA:true,BB:true,KP:true};
 
 function togglePlan(p, el) {
   activePlans[p] = !activePlans[p];
@@ -505,7 +526,7 @@ function getGamesOnDate(dateStr) {
 }
 
 function renderStats() {
-  const keys = ['WA','WB','BA','BB'];
+  const keys = ['WA','WB','BA','BB','KP'];
   document.getElementById('statsBar').innerHTML = keys.map(p => {
     const games = PLANS[p].games;
     const wknd = games.filter(g=>isWeekend(g.date)).length;
@@ -554,15 +575,15 @@ function renderCalendar() {
       const weekend = isWeekend(dateStr);
 
       const gameTags = games.map(g =>
-        `<div class="tag ${g.cls}" data-date="${dateStr}" data-opp="${g.opp}" data-plan="${g.planName}" data-giveaway="${giveaway||''}" data-special="">LAD vs ${g.opp}</div>`
+        `<div class="tag ${g.cls}" data-date="${dateStr}" data-opp="${g.opp}" data-plan="${g.planName}" data-time="${g.time||''}" data-giveaway="${giveaway||''}" data-special="">LAD vs ${g.opp}</div>`
       ).join('');
 
       const specialTag = special
-        ? `<div class="tag special" data-date="${dateStr}" data-opp="${special.opp}" data-plan="Special Pkg" data-giveaway="" data-special="${special.name}|${special.item}">★ ${special.name.length>16?special.name.slice(0,16)+'…':special.name}</div>`
+        ? `<div class="tag special" data-date="${dateStr}" data-opp="${special.opp}" data-plan="Special Pkg" data-time="" data-giveaway="" data-special="${special.name}|${special.item}">★ ${special.name.length>16?special.name.slice(0,16)+'…':special.name}</div>`
         : '';
 
       const giveawayTag = giveaway
-        ? `<div class="tag giveaway" data-date="${dateStr}" data-opp="" data-plan="Giveaway" data-giveaway="${giveaway}" data-special="">🎁 ${giveaway.length>16?giveaway.slice(0,16)+'…':giveaway}</div>`
+        ? `<div class="tag giveaway" data-date="${dateStr}" data-opp="" data-plan="Giveaway" data-time="" data-giveaway="${giveaway}" data-special="">🎁 ${giveaway.length>16?giveaway.slice(0,16)+'…':giveaway}</div>`
         : '';
 
       return `<div class="day-cell${weekend?' weekend':''}">
@@ -592,6 +613,7 @@ function showTooltip(e) {
   const date = el.dataset.date;
   const opp = el.dataset.opp;
   const plan = el.dataset.plan;
+  const time = el.dataset.time || '';
   const giveaway = el.dataset.giveaway;
   const special = el.dataset.special;
   const formatted = new Date(`${date}T12:00:00`).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
@@ -599,7 +621,7 @@ function showTooltip(e) {
   const [sName, sItem] = special ? special.split('|') : ['',''];
   tip.innerHTML = `
     <h4>${opp ? 'LAD vs '+opp : (sName || 'Giveaway')}</h4>
-    <div class="tt-date">${formatted}${weekend?' · Weekend':''}</div>
+    <div class="tt-date">${formatted}${time?' · '+time:''}${weekend&&opp?' · Weekend':''}</div>
     <div class="tt-plan">${plan}</div>
     ${giveaway?`<div class="tt-giveaway">🎁 ${giveaway}</div>`:''}
     ${sName?`<div class="tt-special">★ ${sName}${sItem?' — '+sItem:''}</div>`:''}
